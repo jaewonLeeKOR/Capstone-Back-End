@@ -1,0 +1,71 @@
+name: Deploy to GoormIDE
+
+on:
+  push:
+    branches:
+      - main
+env:
+  GOORM_PROJECT_PATH: "/workspace/byoa"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{secrets.TOKEN_GITHUB}}
+          submodules: recursive
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: 17
+
+      - name: Git Submodule Update
+        run: |
+          git submodule update --remote --recursive
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        shell: bash
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Build with Gradle
+        run: ./gradlew clean build
+        shell: bash
+
+      - name: Make Zip File
+        run: |
+          mkdir content
+          mv ./build/libs/*.jar ./content/
+          zip buildFile.zip ./appspec.yml ./content/*.jar ./scripts/deploy.sh
+        shell:
+          bash
+
+      - name: Copy Zip File to Goorm
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.GOORM_HOST }}
+          username: ${{ secrets.GOORM_USERNAME }}
+          password: ${{ secrets.GOORM_PASSWORD }}
+          port: ${{ secrets.GOORM_PORT }}
+          source: "buildFile.zip"
+          target: GOORM_PROJECT_PATH
+
+      - name: Unzip and Execute on Goorm
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.GOORM_HOST }}
+          username: ${{ secrets.GOORM_USERNAME }}
+          password: ${{ secrets.GOORM_PASSWORD }}
+          port: ${{ secrets.GOORM_PORT }}
+          script: |
+            sudo cd GOORM_PROJECT_PATH
+            sudo unzip -o buildFile.zip
+            sudo rm buildFile.zip
+            sudo chmod +x ./scripts/deploy.sh
+            sudo ./scripts/deploy.sh
