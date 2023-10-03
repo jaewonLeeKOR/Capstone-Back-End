@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-env:
-  GOORM_PROJECT_PATH: /workspace/byoa
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -54,7 +52,7 @@ jobs:
           password: ${{ secrets.GOORM_PASSWORD }}
           port: ${{ secrets.GOORM_PORT }}
           source: "buildFile.zip"
-          target: $GOORM_PROJECT_PATH
+          target: '/workspace/byoa'
 
       - name: Unzip and Execute on Goorm
         uses: appleboy/ssh-action@master
@@ -64,7 +62,7 @@ jobs:
           password: ${{ secrets.GOORM_PASSWORD }}
           port: ${{ secrets.GOORM_PORT }}
           script: |
-            cd $GOORM_PROJECT_PATH
+            cd /workspace/byoa
             unzip -o buildFile.zip
             rm buildFile.zip
             sudo chmod +x ./scripts/deploy.sh
