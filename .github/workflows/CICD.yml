@@ -63,7 +63,7 @@ jobs:
           port: ${{ secrets.GOORM_PORT }}
           script: |
             cd /workspace/byoa
-            unzip -o buildFile.zip
+            unzip -o buildFile.zip -d /workspace/byoa/capstone
             rm buildFile.zip
             sudo chmod +x ./scripts/deploy.sh
             sudo ./scripts/deploy.sh
