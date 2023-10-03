@@ -54,7 +54,7 @@ jobs:
           password: ${{ secrets.GOORM_PASSWORD }}
           port: ${{ secrets.GOORM_PORT }}
           source: "buildFile.zip"
-          target: GOORM_PROJECT_PATH
+          target: $GOORM_PROJECT_PATH
 
       - name: Unzip and Execute on Goorm
         uses: appleboy/ssh-action@master
@@ -64,7 +64,7 @@ jobs:
           password: ${{ secrets.GOORM_PASSWORD }}
           port: ${{ secrets.GOORM_PORT }}
           script: |
-            cd GOORM_PROJECT_PATH
+            cd $GOORM_PROJECT_PATH
             unzip -o buildFile.zip
             rm buildFile.zip
             sudo chmod +x ./scripts/deploy.sh
