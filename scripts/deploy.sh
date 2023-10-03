@@ -12,9 +12,9 @@ DEPLOY_LOG="$REPOSITORY/deploy.log"
 
 TIME_NOW=$(date +%c)
 
-CURRENT_PID=$(pgrep -f $APP_NAME)
+CURRENT_PID=$(pgrep -f $APP_NAME | head -n 1)
 
-if [ -z $CURRENT_PID ]
+if [ -z "$CURRENT_PID" ]
 then
   echo "> 실행중이지 않음."
 else
