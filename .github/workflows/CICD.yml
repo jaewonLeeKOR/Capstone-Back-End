@@ -5,7 +5,7 @@ on:
     branches:
       - main
 env:
-  GOORM_PROJECT_PATH: "/workspace/byoa"
+  GOORM_PROJECT_PATH: /workspace/byoa
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -64,8 +64,8 @@ jobs:
           password: ${{ secrets.GOORM_PASSWORD }}
           port: ${{ secrets.GOORM_PORT }}
           script: |
-            sudo cd GOORM_PROJECT_PATH
-            sudo unzip -o buildFile.zip
-            sudo rm buildFile.zip
+            cd GOORM_PROJECT_PATH
+            unzip -o buildFile.zip
+            rm buildFile.zip
             sudo chmod +x ./scripts/deploy.sh
             sudo ./scripts/deploy.sh
