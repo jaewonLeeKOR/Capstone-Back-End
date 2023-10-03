@@ -65,5 +65,5 @@ jobs:
             cd /workspace/byoa
             unzip -o buildFile.zip -d /workspace/byoa/capstone
             rm buildFile.zip
-            sudo chmod +x ./scripts/deploy.sh
-            sudo ./scripts/deploy.sh
+            sudo chmod +x ./capstone/scripts/deploy.sh
+            sudo ./capstone/scripts/deploy.sh
