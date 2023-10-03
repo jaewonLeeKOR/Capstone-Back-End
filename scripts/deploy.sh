@@ -14,7 +14,7 @@ TIME_NOW=$(date +%c)
 
 CURRENT_PID=$(pgrep -f $APP_NAME)
 
-if [ -z $CURRENT_PID]
+if [ -z $CURRENT_PID ]
 then
   echo "> 실행중이지 않음."
 else
