@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 REPOSITORY=/workspace/byoa/capstone/content
-JAVA_PATH=/home/ubuntu/.sdkman/candidates/java/current/bin/java
 cd $REPOSITORY
 
 APP_NAME=capstone
@@ -29,7 +28,7 @@ fi
 echo "$TIME_NOW > $JAR_FILE 파일 실행"
 echo "$TIME_NOW > $JAR_FILE 파일 실행" >> $DEPLOY_LOG
 
-nohup $JAVA_PATH -jar $JAR_PATH > $APP_LOG 2> $ERROR_LOG & --spring.profiles.active=dev
+nohup java -jar -Dspring.profiles.active=dev $JAR_PATH > $APP_LOG 2> $ERROR_LOG &
 
 NEW_PID=$(pgrep -f $JAR_PATH)
 
