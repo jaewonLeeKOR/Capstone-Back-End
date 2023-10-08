@@ -77,3 +77,9 @@ jobs:
             rm buildFile.zip
             sudo chmod +x ./capstone/scripts/deploy.sh
             sudo ./capstone/scripts/deploy.sh
+
+      - name: Upload Builded zip File Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: builded-zip-artifact
+          path: buildFile.zip
