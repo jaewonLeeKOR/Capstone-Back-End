@@ -43,6 +43,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Build with Gradle
+        id: buildWithGradle
         run: ./gradlew clean build
         shell: bash
 
@@ -54,6 +55,28 @@ jobs:
         shell:
           bash
 
+      - name: Upload Builded zip File Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: builded-zip-artifact
+          path: buildFile.zip
+
+      - name: Upload Report Artifact When Build Failed
+        if: ${{ failure() && steps.buildWithGradle.conclusion == 'failure' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: report-artifact
+          path: ./build/reports/
+          
+  copyZip:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Builded zip File Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: builded-zip-artifact
+          
       - name: Copy Zip File to Goorm
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -63,7 +86,11 @@ jobs:
           port: ${{ secrets.GOORM_PORT }}
           source: "buildFile.zip"
           target: '/workspace/byoa'
-
+          
+  execute:
+    needs: copyZip
+    runs-on: ubuntu-latest
+    steps:
       - name: Unzip and Execute on Goorm
         uses: appleboy/ssh-action@master
         with:
@@ -77,10 +104,3 @@ jobs:
             rm buildFile.zip
             sudo chmod +x ./capstone/scripts/deploy.sh
             sudo ./capstone/scripts/deploy.sh
-
-      - name: Upload Builded zip File Artifact
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: builded-zip-artifact
-          path: buildFile.zip
