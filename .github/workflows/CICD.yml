@@ -79,6 +79,7 @@ jobs:
             sudo ./capstone/scripts/deploy.sh
 
       - name: Upload Builded zip File Artifact
+        if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
           name: builded-zip-artifact
