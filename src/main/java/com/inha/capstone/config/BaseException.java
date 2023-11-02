@@ -1,4 +1,4 @@
-package com.inha.capstone.cofig;
+package com.inha.capstone.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

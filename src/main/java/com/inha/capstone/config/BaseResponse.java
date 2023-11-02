@@ -1,4 +1,4 @@
-package com.inha.capstone.cofig;
+package com.inha.capstone.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-import static com.inha.capstone.cofig.BaseResponseStatus.SUCCESS;
+import static com.inha.capstone.config.BaseResponseStatus.SUCCESS;
 
 @Getter
 @JsonPropertyOrder({"isSuccess", "code", "message", "result"})
