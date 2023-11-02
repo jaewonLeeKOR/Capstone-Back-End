@@ -25,6 +25,13 @@ public class BaseResponse<T> {
         this.result = result;
     }
 
+    public BaseResponse() {
+        this.isSuccess = SUCCESS.isSuccess();
+        this.httpStatus = SUCCESS.getHttpStatus();
+        this.message = SUCCESS.getMessage();
+        this.result = null;
+    }
+
     public BaseResponse(BaseResponseStatus status) {
         this.isSuccess = status.isSuccess();
         this.httpStatus = status.getHttpStatus();
