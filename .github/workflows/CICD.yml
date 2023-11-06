@@ -39,9 +39,6 @@ jobs:
         with:
           mongodb-version: 4.4
 
-      - name: Install NPM
-        run: npm install
-
       - name: Setup Java JDK
         uses: actions/setup-java@v3
         with:
