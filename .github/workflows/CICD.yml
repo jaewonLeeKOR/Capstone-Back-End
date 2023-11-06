@@ -35,7 +35,7 @@ jobs:
           sudo apt-get -yqq install postgresql
           psql -h localhost -c 'CREATE DATABASE testdb;'
         env:
-          POSTGRES_USER: ${{secrets.POSTGRES_LOCAL_USER}}
+          PGUSER: ${{secrets.POSTGRES_LOCAL_USER}}
           PGPASSWORD: ${{secrets.POSTGRES_LOCAL_USER_PASSWORD}}
 
       - name: Use Node.js
