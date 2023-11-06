@@ -7,9 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ 18.x, 20.x ]
 
     services:
       postgres:
@@ -35,7 +32,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version}}
+          node-version: 16.20.0
 
       - name: Use MongoDB
         uses: supercharge/mongodb-github-action@1.10.0
