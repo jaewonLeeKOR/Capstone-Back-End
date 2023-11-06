@@ -29,23 +29,31 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Application> applicationList;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
+    private String role;
 
     public User(String id, String password, String nickname, LocalDateTime createdDate) {
         this.id = id;
         this.password = password;
         this.nickname = nickname;
         this.createdDate = createdDate;
+        this.role = "USER";
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
+
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+
+        for(String role : role.split(",")){
+            authorities.add(new SimpleGrantedAuthority(role));
+        }
+        return authorities;
+
+        /*return this.roles.stream()
                 .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
     }
+
 
     @Override
     public String getUsername() {
