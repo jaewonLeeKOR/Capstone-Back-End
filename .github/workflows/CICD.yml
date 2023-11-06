@@ -30,9 +30,9 @@ jobs:
           submodules: recursive
 
       - name: Use Node.js
-        uses: actions/setup/setup-node@v3
+        uses: actions/setup-node@v3
         with:
-          node-version: 16.20.0
+          node-version: 16
 
       - name: Use MongoDB
         uses: supercharge/mongodb-github-action@1.10.0
