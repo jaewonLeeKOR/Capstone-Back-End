@@ -7,12 +7,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 18.x, 20.x ]
 
     services:
       postgres:
         image: postgres
         env:
-          POSTGRES_DATABASE: byoadb
+          POSTGRES_MULTIPLE_DATABASES: byoadb, testdb
           POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
@@ -28,6 +31,18 @@ jobs:
         with:
           token: ${{secrets.TOKEN_GITHUB}}
           submodules: recursive
+
+      - name: Use Node.js
+        uses: actions/setup/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version}}
+
+      - name: Use MongoDB
+        uses: supercharge/mongodb-github-action@1.10.0
+        with:
+          mongodb-version: 4.4
+
+      - name: npm install
 
       - name: Setup Java JDK
         uses: actions/setup-java@v3
