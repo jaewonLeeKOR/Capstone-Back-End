@@ -36,12 +36,12 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<BaseResponse<Token>> login(@RequestBody @Valid LoginRequest request){
+    public ResponseEntity<BaseResponse<LoginResponse>> login(@RequestBody @Valid LoginRequest request){
 
         Token token = userService.login(request.getId(), request.getPassword());
-
+        User user = userService.findById(request.getId());
         return ResponseEntity.ok()
-                .body(new BaseResponse<>(token));
+                .body(new BaseResponse<>(new LoginResponse(token, user.getNickname())));
     }
 
 }

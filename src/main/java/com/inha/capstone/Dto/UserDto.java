@@ -1,6 +1,7 @@
 package com.inha.capstone.Dto;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -22,5 +23,12 @@ public class UserDto {
         private String id;
         @NotBlank
         private String password;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class LoginResponse{
+        private Token accessToken;
+        private String nickname;
     }
 }
