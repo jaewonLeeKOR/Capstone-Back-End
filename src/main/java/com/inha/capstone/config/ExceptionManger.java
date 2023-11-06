@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.nio.file.AccessDeniedException;
+
 @RestControllerAdvice
 public class ExceptionManger {
     @ExceptionHandler(RuntimeException.class)
@@ -14,8 +16,8 @@ public class ExceptionManger {
     }
 
     @ExceptionHandler(BaseException.class)
-    public ResponseEntity<?> baseExceptionHandler(BaseException e) {
-        return ResponseEntity.status(e.getStatus().getHttpStatus())
-                .body(e.getStatus().getMessage());
+    public ResponseEntity<?> baseExceptionHandler(BaseResponseStatus status) {
+        return ResponseEntity.status(status.getHttpStatus())
+                .body(new BaseResponse(status));
     }
 }

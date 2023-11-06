@@ -23,6 +23,8 @@ public class UserService {
     @Transactional
     public void save(User user){ userRepository.save(user); }
 
+    public User findById(String id) { return userRepository.findById(id).get();}
+
     @Transactional
     public Token login(String memberId, String password) {
         // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
