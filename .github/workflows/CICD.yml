@@ -12,8 +12,8 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_ALLOW_EMPTY_PASSWORD: yes
           POSTGRES_DATABASE: byoadb
+          POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
         options: >-
