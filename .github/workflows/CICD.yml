@@ -13,8 +13,8 @@ jobs:
         image: postgres
         env:
           POSTGRES_DB: byoadb
-          POSTGRES_USER: ${{secrets.POSTGRES_LOCAL_USER}}
-          POSTGRES_PASSWORD: ${{secrets.POSTGRES_LOCAL_USER_PASSWORD}}
+          POSTGRES_USER: byoauser
+          POSTGRES_PASSWORD: byoauserpassword
         ports:
           - 5432:5432
         options: >-
@@ -35,8 +35,8 @@ jobs:
           sudo apt-get -yqq install postgresql
           psql -h localhost -c 'CREATE DATABASE testdb;'
         env:
-          PGUSER: ${{secrets.POSTGRES_LOCAL_USER}}
-          PGPASSWORD: ${{secrets.POSTGRES_LOCAL_USER_PASSWORD}}
+          PGUSER: byoauser
+          PGPASSWORD: byoauserpassword
 
       - name: Use Node.js
         uses: actions/setup-node@v3
