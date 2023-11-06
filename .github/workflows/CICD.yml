@@ -12,7 +12,7 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_MULTIPLE_DB: byoadb, testdb
+          POSTGRES_DB: byoadb
           POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
@@ -28,6 +28,11 @@ jobs:
         with:
           token: ${{secrets.TOKEN_GITHUB}}
           submodules: recursive
+
+      - name: Create testdb database
+        run: |
+          sudo apt-get -yqq install postgresql
+          psql -h localhost -c 'CREATE DATABASE testdb;'
 
       - name: Use Node.js
         uses: actions/setup-node@v3
