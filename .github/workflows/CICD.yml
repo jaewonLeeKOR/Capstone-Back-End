@@ -33,8 +33,10 @@ jobs:
       - name: Create testdb database
         run: |
           sudo apt-get -yqq install postgresql
-          psql -h localhost -c 'CREATE DATABASE testdb;'
+          psql -c 'CREATE DATABASE testdb;'
         env:
+          PGDATABASE: postgres
+          PGHOST: localhost
           PGUSER: byoauser
           PGPASSWORD: byoauserpassword
 
