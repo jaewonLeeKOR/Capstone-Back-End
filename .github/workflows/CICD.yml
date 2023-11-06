@@ -13,8 +13,8 @@ jobs:
         image: postgres
         env:
           POSTGRES_DB: byoadb
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: byoauser
+          POSTGRES_PASSWORD: byoauserpassword
         ports:
           - 5432:5432
         options: >-
@@ -33,9 +33,12 @@ jobs:
       - name: Create testdb database
         run: |
           sudo apt-get -yqq install postgresql
-          psql -h localhost -U postgres -c 'CREATE DATABASE testdb;'
+          psql -c 'CREATE DATABASE testdb;'
         env:
-          PGPASSWORD: postgres
+          PGDATABASE: postgres
+          PGHOST: localhost
+          PGUSER: byoauser
+          PGPASSWORD: byoauserpassword
 
       - name: Use Node.js
         uses: actions/setup-node@v3
@@ -89,7 +92,7 @@ jobs:
         with:
           name: report-artifact
           path: ./build/reports/
-          
+
   copyZip:
     needs: build
     runs-on: ubuntu-latest
@@ -98,7 +101,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: builded-zip-artifact
-          
+
       - name: Copy Zip File to Goorm
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -108,7 +111,7 @@ jobs:
           port: ${{ secrets.GOORM_PORT }}
           source: "buildFile.zip"
           target: '/workspace/byoa'
-          
+
   execute:
     needs: copyZip
     runs-on: ubuntu-latest
