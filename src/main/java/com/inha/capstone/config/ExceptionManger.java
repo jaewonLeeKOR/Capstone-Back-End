@@ -14,8 +14,9 @@ public class ExceptionManger {
     }
 
     @ExceptionHandler(BaseException.class)
-    public ResponseEntity<?> baseExceptionHandler(BaseException e) {
-        return ResponseEntity.status(e.getStatus().getHttpStatus())
-                .body(e.getStatus().getMessage());
+    public ResponseEntity<?> baseExceptionHandler(BaseResponseStatus status) {
+        return ResponseEntity.status(status.getHttpStatus())
+                .body(new BaseResponse(status));
+
     }
 }

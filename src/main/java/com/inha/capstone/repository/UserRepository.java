@@ -26,5 +26,4 @@ public class UserRepository {
                 .stream().findAny();
     }
 
-
 }

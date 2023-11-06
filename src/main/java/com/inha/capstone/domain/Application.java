@@ -21,12 +21,16 @@ public class Application {
     private String description;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-//    category;
 
-    public Application(User user, String description, LocalDateTime createdDate, LocalDateTime modifiedDate) {
+    @Column(name = "category")
+    @Enumerated(EnumType.STRING)
+    private ApplicationCategory applicationCategory;
+
+    public Application(User user, String category,String description, LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.user = user;
         this.description = description;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
+        this.applicationCategory = ApplicationCategory.nameOf(category);
     }
 }
