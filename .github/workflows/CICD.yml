@@ -12,7 +12,7 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_MULTIPLE_DATABASES: byoadb, testdb
+          POSTGRES_MULTIPLE_DB: byoadb, testdb
           POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
