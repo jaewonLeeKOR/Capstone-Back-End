@@ -38,4 +38,10 @@ public class BaseResponse<T> {
         this.message = status.getMessage();
     }
 
+    public BaseResponse(Exception e){
+        this.isSuccess = false;
+        this.httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        this.message = e.getMessage();
+    }
+
 }

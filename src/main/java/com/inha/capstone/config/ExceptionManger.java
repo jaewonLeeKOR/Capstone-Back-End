@@ -10,7 +10,7 @@ public class ExceptionManger {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<?> runtimeExceptionHandler(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .build();
+                .body(new BaseResponse(e));
     }
 
     @ExceptionHandler(BaseException.class)
