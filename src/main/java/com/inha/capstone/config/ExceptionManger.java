@@ -2,6 +2,7 @@ package com.inha.capstone.config;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -14,9 +15,15 @@ public class ExceptionManger {
     }
 
     @ExceptionHandler(BaseException.class)
-    public ResponseEntity<?> baseExceptionHandler(BaseResponseStatus status) {
-        return ResponseEntity.status(status.getHttpStatus())
-                .body(new BaseResponse(status));
+    public ResponseEntity<?> baseExceptionHandler(BaseException e) {
+        return ResponseEntity.status(e.getStatus().getHttpStatus())
+                .body(new BaseResponse(e.getStatus()));
 
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> methodArgumentNotValidException(MethodArgumentNotValidException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new BaseResponse(BaseResponseStatus.INVALID_PARAMETER));
     }
 }

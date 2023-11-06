@@ -10,7 +10,9 @@ public enum BaseResponseStatus {
      */
     SUCCESS(true, HttpStatus.OK,"요청에 성공하였습니다."),
   
-    PERMISSION_DENIED(false, HttpStatus.FORBIDDEN, "권한이 없는 요청입니다.")
+    PERMISSION_DENIED(false, HttpStatus.FORBIDDEN, "권한이 없는 요청입니다."),
+    INVALID_PARAMETER(false, HttpStatus.BAD_REQUEST, "필수파라미터가 누락됐습니다."),
+    DUPLICATED_USER(false, HttpStatus.CONFLICT, "중복된 회원입니다."),
 
     ;
     private final boolean isSuccess;

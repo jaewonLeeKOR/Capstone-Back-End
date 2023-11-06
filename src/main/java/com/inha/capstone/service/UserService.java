@@ -1,6 +1,8 @@
 package com.inha.capstone.service;
 
 import com.inha.capstone.Dto.Token;
+import com.inha.capstone.config.BaseException;
+import com.inha.capstone.config.BaseResponseStatus;
 import com.inha.capstone.domain.JwtTokenProvider;
 import com.inha.capstone.domain.User;
 import com.inha.capstone.repository.UserRepository;
@@ -10,6 +12,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -21,7 +25,12 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
-    public void save(User user){ userRepository.save(user); }
+    public void save(User user){
+        if(userRepository.findById(user.getId()).isPresent())
+            throw new BaseException(BaseResponseStatus.DUPLICATED_USER);
+
+        userRepository.save(user);
+    }
 
     public User findById(String id) { return userRepository.findById(id).get();}
 
