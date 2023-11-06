@@ -1,6 +1,7 @@
 package com.inha.capstone.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class Application {
     private Long applicationId;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+    @NotBlank
     private String description;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;

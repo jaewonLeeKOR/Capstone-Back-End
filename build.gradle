@@ -47,7 +47,7 @@ dependencies {
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 
-	implementation 'jakarta.validation:jakarta.validation-api:2.0.2' // Use the latest version available
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 }
 

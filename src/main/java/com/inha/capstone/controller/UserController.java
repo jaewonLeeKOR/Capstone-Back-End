@@ -7,13 +7,13 @@ import com.inha.capstone.config.BaseResponse;
 import com.inha.capstone.domain.User;
 import com.inha.capstone.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 import static com.inha.capstone.Dto.UserDto.*;

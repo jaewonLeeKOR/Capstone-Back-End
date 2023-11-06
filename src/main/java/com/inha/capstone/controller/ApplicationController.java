@@ -8,6 +8,7 @@ import com.inha.capstone.domain.Application;
 import com.inha.capstone.domain.User;
 import com.inha.capstone.service.ApplicationService;
 import com.inha.capstone.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.sql.Update;
 import org.json.simple.JSONObject;
@@ -15,7 +16,6 @@ import org.json.simple.parser.ParseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDateTime;
 

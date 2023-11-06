@@ -1,12 +1,10 @@
 package com.inha.capstone.Dto;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.json.simple.JSONObject;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 public class ApplicationDto {
 

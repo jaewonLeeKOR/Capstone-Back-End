@@ -1,6 +1,7 @@
 package com.inha.capstone.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,9 +10,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 
 @Entity(name = "Users")
 @Builder
@@ -22,10 +22,15 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+
     @Column(unique = true)
+    @NotBlank
     private String id;
+    @NotBlank
     private String password;
+    @NotBlank
     private String nickname;
+
     private LocalDateTime createdDate;
     @OneToMany(mappedBy = "user")
     private List<Application> applicationList;
