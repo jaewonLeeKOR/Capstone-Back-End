@@ -64,4 +64,12 @@ public class UserService {
         userRepository.delete(user.get());
     }
 
+    public User findOne(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty())
+            throw new BaseException(BaseResponseStatus.NOT_EXIST_USER);
+
+        return user.get();
+    }
+
 }

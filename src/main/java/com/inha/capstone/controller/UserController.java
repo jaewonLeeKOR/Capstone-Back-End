@@ -58,4 +58,13 @@ public class UserController {
         return ResponseEntity.ok()
                 .body(new BaseResponse<>());
     }
+
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<BaseResponse<UserInformationResponse>> getUserDetail(@PathVariable Long userId){
+        User user = userService.findOne(userId);
+
+        return ResponseEntity.ok()
+                .body(new BaseResponse<>(new UserInformationResponse(user)));
+    }
+
 }
