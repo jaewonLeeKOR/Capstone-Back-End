@@ -26,13 +26,13 @@ public class UserService {
 
     @Transactional
     public void save(User user){
-        if(userRepository.findById(user.getId()).isPresent())
+        if(userRepository.findByUserId(user.getUserId()).isPresent())
             throw new BaseException(BaseResponseStatus.DUPLICATED_USER);
 
         userRepository.save(user);
     }
 
-    public User findById(String id) { return userRepository.findById(id).get();}
+    public User findByUserId(String userId) { return userRepository.findByUserId(userId).get();}
 
     @Transactional
     public Token login(String memberId, String password) {
@@ -41,7 +41,7 @@ public class UserService {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, password);
         System.out.println(authenticationToken);
 
-        if(userRepository.findById(memberId).isEmpty())
+        if(userRepository.findByUserId(memberId).isEmpty())
             throw new BaseException(BaseResponseStatus.NOT_EXIST_USER);
 
         // 2. 실제 검증 (사용자 비밀번호 체크)이 이루어지는 부분

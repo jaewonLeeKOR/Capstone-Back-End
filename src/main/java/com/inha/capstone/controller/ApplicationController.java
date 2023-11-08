@@ -29,7 +29,7 @@ public class ApplicationController {
 
     @PostMapping("/application")
     public ResponseEntity<BaseResponse<Void>> createApplication(Principal principal, @RequestBody @Valid CreateApplicationRequest request) throws ParseException {
-        User user = userService.findById(principal.getName());
+        User user = userService.findByUserId(principal.getName());
         System.out.println(request);
         Application application = new Application(user, request.getCategory(), request.getDescription(), LocalDateTime.now(), LocalDateTime.now());
         applicationService.save(application, request.getUi());

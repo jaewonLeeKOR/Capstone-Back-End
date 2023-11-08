@@ -52,7 +52,7 @@ public class ApplicationService {
     @Transactional
     public void updateApplication(Long applicationId, String newUi) throws ParseException{
         // 수정 시간 변경
-        Application application = applicationRepository.fineOne(applicationId);
+        Application application = applicationRepository.findById(applicationId).get();
         application.setModifiedDate(LocalDateTime.now());
 
         // 몽고db 업데이트
@@ -66,8 +66,8 @@ public class ApplicationService {
     }
 
     public void checkPermissionForApplication(Principal principal, Long applicationId){
-        User user = userRepository.findById(principal.getName()).get();
-        Application application = applicationRepository.fineOne(applicationId);
+        User user = userRepository.findByUserId(principal.getName()).get();
+        Application application = applicationRepository.findById(applicationId).get();
 
         if(user.getUserId() != application.getUser().getUserId())
             throw new BaseException(BaseResponseStatus.PERMISSION_DENIED);

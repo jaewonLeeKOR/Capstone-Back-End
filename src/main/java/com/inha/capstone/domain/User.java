@@ -21,11 +21,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
     @Column(unique = true)
     @NotBlank
-    private String id;
+    private String userId;
     @NotBlank
     private String password;
     @NotBlank
@@ -37,8 +37,8 @@ public class User implements UserDetails {
 
     private String role;
 
-    public User(String id, String password, String nickname, LocalDateTime createdDate) {
-        this.id = id;
+    public User(String userId, String password, String nickname, LocalDateTime createdDate) {
+        this.userId = userId;
         this.password = password;
         this.nickname = nickname;
         this.createdDate = createdDate;
@@ -63,7 +63,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return id;
+        return userId;
     }
 
     @Override

@@ -39,7 +39,7 @@ public class UserController {
     public ResponseEntity<BaseResponse<LoginResponse>> login(@RequestBody @Valid LoginRequest request){
 
         Token token = userService.login(request.getId(), request.getPassword());
-        User user = userService.findById(request.getId());
+        User user = userService.findByUserId(request.getId());
         return ResponseEntity.ok()
                 .body(new BaseResponse<>(new LoginResponse(token, user.getNickname())));
     }
