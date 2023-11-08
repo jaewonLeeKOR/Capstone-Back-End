@@ -10,11 +10,11 @@ import com.inha.capstone.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.inha.capstone.Dto.UserDto.*;
 
@@ -44,4 +44,18 @@ public class UserController {
                 .body(new BaseResponse<>(new LoginResponse(token, user.getNickname())));
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<BaseResponse<List<UserListResponse>>> findByUserIdContaining(@RequestParam("keyword")String keyword){
+        List<User> userList = userService.findByUserIdContaining(keyword);
+        return ResponseEntity.ok()
+                .body(new BaseResponse<>(userList.stream().map(UserListResponse::new).collect(Collectors.toList())));
+    }
+
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<BaseResponse<Void>> removeUser(@PathVariable Long userId){
+        userService.removeUser(userId);
+
+        return ResponseEntity.ok()
+                .body(new BaseResponse<>());
+    }
 }

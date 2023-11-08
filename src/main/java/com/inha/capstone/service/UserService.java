@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,6 +53,15 @@ public class UserService {
         Token tokenInfo = jwtTokenProvider.generateToken(authentication);
 
         return tokenInfo;
+    }
+
+    public List<User> findByUserIdContaining(String keyword) { return userRepository.findByUserIdContaining(keyword);}
+    @Transactional
+    public void removeUser(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty())
+            throw new BaseException(BaseResponseStatus.NOT_EXIST_USER);
+        userRepository.delete(user.get());
     }
 
 }

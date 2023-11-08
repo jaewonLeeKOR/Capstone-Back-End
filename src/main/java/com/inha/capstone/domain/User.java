@@ -32,7 +32,7 @@ public class User implements UserDetails {
     private String nickname;
 
     private LocalDateTime createdDate;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Application> applicationList;
 
     private String role;

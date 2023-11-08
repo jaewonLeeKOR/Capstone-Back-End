@@ -1,6 +1,7 @@
 package com.inha.capstone.Dto;
 
 
+import com.inha.capstone.domain.User;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,5 +30,18 @@ public class UserDto {
     public static class LoginResponse{
         private Token token;
         private String nickname;
+    }
+
+    @Data
+    public static class UserListResponse{
+        private Long id;
+        private String userId;
+        private String nickname;
+
+        public UserListResponse(User user) {
+            this.id = user.getId();
+            this.userId = user.getUserId();
+            this.nickname = user.getNickname();
+        }
     }
 }
