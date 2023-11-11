@@ -8,6 +8,7 @@ import com.inha.capstone.domain.Application;
 import com.inha.capstone.domain.User;
 import com.inha.capstone.service.ApplicationService;
 import com.inha.capstone.service.UserService;
+import com.inha.capstone.util.ApplicationUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.sql.Update;
@@ -39,7 +40,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/application/{applicationId}")
-    public ResponseEntity<BaseResponse<ApplicationDto.ApplicationUiResponse>> login(@PathVariable Long applicationId){
+    public ResponseEntity<BaseResponse<ApplicationDto.ApplicationUiResponse>> getApplicationUi(@PathVariable Long applicationId){
 
         JSONObject UI = applicationService.getApplicationUI(applicationId);
 
@@ -56,5 +57,17 @@ public class ApplicationController {
 
         return ResponseEntity.ok()
                 .body(new BaseResponse());
+    }
+
+    @GetMapping("/test/{applicationId}")
+    public ResponseEntity<BaseResponse<ApplicationDto.TestResponse>> test(@PathVariable Long applicationId) throws ParseException{
+
+        JSONObject UI = applicationService.getApplicationUI(applicationId);
+        String ret = ApplicationUtil.parseApplicationUi(UI);
+
+        return ResponseEntity.ok()
+                .body(new BaseResponse<ApplicationDto.TestResponse>(
+                        new ApplicationDto.TestResponse(ret)
+                ));
     }
 }

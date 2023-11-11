@@ -31,4 +31,10 @@ public class ApplicationDto {
     public static class ApplicationUiResponse{
         JSONObject UI;
     }
+
+    @Data
+    @AllArgsConstructor
+    public static class TestResponse{
+        String UI;
+    }
 }
