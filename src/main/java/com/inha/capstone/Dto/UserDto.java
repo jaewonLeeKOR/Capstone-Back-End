@@ -29,10 +29,18 @@ public class UserDto {
     }
 
     @Data
-    @AllArgsConstructor
     public static class LoginResponse{
         private Token token;
+        private Long id;
+        private String userId;
         private String nickname;
+
+        public LoginResponse(Token token, User user) {
+            this.token = token;
+            this.id = user.getId();
+            this.userId = user.getUserId();
+            this.nickname = user.getNickname();
+        }
     }
 
     @Data

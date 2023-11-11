@@ -41,7 +41,7 @@ public class UserController {
         Token token = userService.login(request.getId(), request.getPassword());
         User user = userService.findByUserId(request.getId());
         return ResponseEntity.ok()
-                .body(new BaseResponse<>(new LoginResponse(token, user.getNickname())));
+                .body(new BaseResponse<>(new LoginResponse(token, user)));
     }
 
     @GetMapping("/users")
