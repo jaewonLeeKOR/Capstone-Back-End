@@ -16,6 +16,7 @@ public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long applicationId;
+    private String name;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
     @NotBlank
@@ -26,12 +27,4 @@ public class Application {
     @Column(name = "category")
     @Enumerated(EnumType.STRING)
     private ApplicationCategory applicationCategory;
-
-    public Application(User user, String category,String description, LocalDateTime createdDate, LocalDateTime modifiedDate) {
-        this.user = user;
-        this.description = description;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
-        this.applicationCategory = ApplicationCategory.nameOf(category);
-    }
 }

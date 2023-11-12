@@ -72,4 +72,6 @@ public class ApplicationService {
         if(user.getUserId() != application.getUser().getUserId())
             throw new BaseException(BaseResponseStatus.PERMISSION_DENIED);
     }
+
+    public List<Application> findByNameContaining(String keyword) { return applicationRepository.findByNameContaining(keyword);}
 }

@@ -1,10 +1,12 @@
 package com.inha.capstone.controller;
 
 import com.inha.capstone.Dto.ApplicationDto;
+import com.inha.capstone.Dto.ApplicationDto.ApplicationListResponse;
 import com.inha.capstone.Dto.ApplicationDto.CreateApplicationRequest;
 import com.inha.capstone.Dto.ApplicationDto.UpdateApplicationRequest;
 import com.inha.capstone.config.BaseResponse;
 import com.inha.capstone.domain.Application;
+import com.inha.capstone.domain.ApplicationCategory;
 import com.inha.capstone.domain.User;
 import com.inha.capstone.service.ApplicationService;
 import com.inha.capstone.service.UserService;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -32,7 +36,16 @@ public class ApplicationController {
     public ResponseEntity<BaseResponse<Void>> createApplication(Principal principal, @RequestBody @Valid CreateApplicationRequest request) throws ParseException {
         User user = userService.findByUserId(principal.getName());
         System.out.println(request);
-        Application application = new Application(user, request.getCategory(), request.getDescription(), LocalDateTime.now(), LocalDateTime.now());
+
+        Application application = Application.builder()
+                .user(user)
+                .name(request.getName())
+                .description(request.getDescription())
+                .createdDate(LocalDateTime.now())
+                .modifiedDate(LocalDateTime.now())
+                .applicationCategory(ApplicationCategory.nameOf(request.getCategory()))
+                .build();
+
         applicationService.save(application, request.getUi());
 
         return ResponseEntity.ok()
@@ -70,4 +83,15 @@ public class ApplicationController {
                         new ApplicationDto.TestResponse(ret)
                 ));
     }
+
+    @GetMapping("/applications")
+    public ResponseEntity<BaseResponse<List<ApplicationListResponse>>> findByApplicationNameContaining(@RequestParam String keyword) {
+
+        List<Application> applicationList = applicationService.findByNameContaining(keyword);
+
+        return ResponseEntity.ok()
+                .body(new BaseResponse<>(applicationList.stream().map(ApplicationListResponse::new).collect(Collectors.toList())));
+    }
+
+
 }
