@@ -102,5 +102,12 @@ public class ApplicationController {
                 .body(new BaseResponse<>(new ApplicationDto.ApplicationInformationResponse(application)));
     }
 
+    @GetMapping("/applications/all")
+    public ResponseEntity<BaseResponse<List<ApplicationListResponse>>> findAllApplication() {
 
+        List<Application> application = applicationService.findAllApplication();
+
+        return ResponseEntity.ok()
+                .body(new BaseResponse<>(application.stream().map(ApplicationListResponse::new).collect(Collectors.toList())));
+    }
 }
