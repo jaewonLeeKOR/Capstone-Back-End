@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -74,4 +75,12 @@ public class ApplicationService {
     }
 
     public List<Application> findByNameContaining(String keyword) { return applicationRepository.findByNameContaining(keyword);}
+
+    public Application findById(Long applicationId) {
+        Optional<Application> application = applicationRepository.findById(applicationId);
+        if(application.isEmpty())
+            throw new BaseException(BaseResponseStatus.NOT_EXIST_APPLICATION);
+
+        return application.get();
+    }
 }

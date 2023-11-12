@@ -93,5 +93,14 @@ public class ApplicationController {
                 .body(new BaseResponse<>(applicationList.stream().map(ApplicationListResponse::new).collect(Collectors.toList())));
     }
 
+    @GetMapping("/applications/{applicationId}/information")
+    public ResponseEntity<BaseResponse<ApplicationDto.ApplicationInformationResponse>> findByApplicationNameContaining(@PathVariable Long applicationId) {
+
+        Application application = applicationService.findById(applicationId);
+
+        return ResponseEntity.ok()
+                .body(new BaseResponse<>(new ApplicationDto.ApplicationInformationResponse(application)));
+    }
+
 
 }

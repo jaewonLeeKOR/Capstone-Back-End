@@ -14,7 +14,7 @@ public enum BaseResponseStatus {
     INVALID_PARAMETER(false, HttpStatus.BAD_REQUEST, "필수파라미터가 누락됐습니다."),
     DUPLICATED_USER(false, HttpStatus.CONFLICT, "중복된 회원입니다."),
     NOT_EXIST_USER(false, HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다."),
-
+    NOT_EXIST_APPLICATION(false,HttpStatus.NOT_FOUND, "존재하지 않는 애플리케이션입니다.")
     ;
     private final boolean isSuccess;
     private final HttpStatus httpStatus;

@@ -62,4 +62,23 @@ public class ApplicationDto {
             this.createdDate = application.getCreatedDate();
         }
     }
+
+    @Data
+    public static class ApplicationInformationResponse{
+        Long applicationId;
+        String name;
+        String description;
+        String category;
+        LocalDateTime createdDate;
+        LocalDateTime modifiedDate;
+
+        public ApplicationInformationResponse(Application application) {
+            this.applicationId =application.getApplicationId();
+            this.name = application.getName();
+            this.description = application.getDescription();
+            this.category = application.getApplicationCategory().getName();
+            this.createdDate = application.getCreatedDate();
+            this.modifiedDate = application.getModifiedDate();
+        }
+    }
 }
