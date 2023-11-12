@@ -52,7 +52,7 @@ public class ApplicationController {
                 .body(new BaseResponse());
     }
 
-    @GetMapping("/application/{applicationId}")
+    @GetMapping("/applications/{applicationId}")
     public ResponseEntity<BaseResponse<ApplicationDto.ApplicationUiResponse>> getApplicationUi(@PathVariable Long applicationId){
 
         JSONObject UI = applicationService.getApplicationUI(applicationId);
@@ -63,7 +63,7 @@ public class ApplicationController {
                 ));
     }
 
-    @PutMapping("/application/{applicationId}")
+    @PatchMapping("/applications/{applicationId}")
     public ResponseEntity<BaseResponse<Void>> updateApplication(Principal principal, @PathVariable Long applicationId, @RequestBody @Valid UpdateApplicationRequest request) throws ParseException{
         applicationService.checkPermissionForApplication(principal, applicationId);
         applicationService.updateApplication(applicationId, request.getUi());
