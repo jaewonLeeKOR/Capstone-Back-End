@@ -45,7 +45,7 @@ public class ApplicationController {
         JSONObject UI = applicationService.getApplicationUI(applicationId);
 
         return ResponseEntity.ok()
-                .body(new BaseResponse<ApplicationDto.ApplicationUiResponse>(
+                .body(new BaseResponse<>(
                     new ApplicationDto.ApplicationUiResponse(UI)
                 ));
     }
@@ -66,7 +66,7 @@ public class ApplicationController {
         String ret = ApplicationUtil.parseApplicationUi(UI);
 
         return ResponseEntity.ok()
-                .body(new BaseResponse<ApplicationDto.TestResponse>(
+                .body(new BaseResponse<>(
                         new ApplicationDto.TestResponse(ret)
                 ));
     }
