@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.inha.capstone.Dto.FIleDto.GetFileResponse;
 import com.inha.capstone.config.BaseException;
 import com.inha.capstone.config.BaseResponseStatus;
 import com.inha.capstone.domain.Application;
@@ -22,8 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -174,6 +177,16 @@ public class FileService {
   @Transactional
   public void delete(FileObject file) {
     fileRepository.deleteById(file.getFileId());
+  }
+
+  public List<GetFileResponse> getFilePathes(Long applicationId, User user){
+    if(applicationId == 0)
+      throw new BaseException(BaseResponseStatus.INCORRECT_APPLICATIONID);
+    Application application = applicationService.findById(applicationId);
+    List<FileObject> files = fileRepository.findFileObjectsByApplicationAndUser(application, user);
+    return files.stream()
+        .map(file -> new GetFileResponse(file.getFilePath(), file.getComponentId()))
+        .collect(Collectors.toList());
   }
 
   /**
