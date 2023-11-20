@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.List;
 
 @Slf4j
 @RequestMapping("/file")
@@ -43,6 +44,14 @@ public class FileController {
     fileService.deleteFile(application, user, request.getComponentId());
     log.info("deleteFile REQUESTED - applicationId : " + application.getApplicationId() + ", userId : " + user.getId() + ",componentId : " + request.getComponentId());
     return ResponseEntity.ok().body(new BaseResponse<>(true));
+  }
+
+  @GetMapping("/applicaiton/{applicationId}")
+  public ResponseEntity<BaseResponse<List<GetFileResponse>>> getFilePathes(Principal principal, @PathVariable("applicationId") Long applicationId) {
+    User user = userService.findByUserId(principal.getName());
+    List<GetFileResponse> filePathes = fileService.getFilePathes(applicationId, user);
+    log.info("getFilePathes REQUESTED - applicationId : " + applicationId + ", userId : " + user.getId() + ", files : " + filePathes.size());
+    return ResponseEntity.ok().body(new BaseResponse<>(filePathes));
   }
 }
 
