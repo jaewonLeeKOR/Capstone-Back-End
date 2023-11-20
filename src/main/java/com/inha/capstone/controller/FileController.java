@@ -46,6 +46,13 @@ public class FileController {
     return ResponseEntity.ok().body(new BaseResponse<>(true));
   }
 
+  @GetMapping()
+  public ResponseEntity<BaseResponse<List<GetFileResponse>>> getFileGlobalPathes() {
+    List<GetFileResponse> filePathes = fileService.getGlobalFilePathes();
+    log.info("getFileGlobalPathes REQUESTED");
+    return ResponseEntity.ok().body(new BaseResponse<>(filePathes));
+  }
+
   @GetMapping("/applicaiton/{applicationId}")
   public ResponseEntity<BaseResponse<List<GetFileResponse>>> getFilePathes(Principal principal, @PathVariable("applicationId") Long applicationId) {
     User user = userService.findByUserId(principal.getName());
