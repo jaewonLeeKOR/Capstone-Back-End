@@ -190,6 +190,18 @@ public class FileService {
   }
 
   /**
+   * 공용 파일을 조회를 위한 메서드
+   * (condition : application == null && uesr == null)
+   * @return
+   */
+  public List<GetFileResponse> getGlobalFilePathes() {
+    List<FileObject> files = fileRepository.findFileObjectsWhereApplicationIsNullAndUserIsNull();
+    return files.stream()
+        .map(file -> new GetFileResponse(file.getFilePath(), file.getComponentId()))
+        .collect(Collectors.toList());
+  }
+
+  /**
    * RDB 상 FileObject 조회 메서드
    * @param application
    * @param user
