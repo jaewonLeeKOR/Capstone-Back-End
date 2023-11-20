@@ -32,5 +32,20 @@ public interface FileRepository extends JpaRepository<FileObject, Long> {
   )
   List<FileObject> findFileObjectsByApplicationAndUser(Application application, User user);
 
+  /**
+   * application에 속하지 않은 이미지 데이터 조회
+   * @return
+   */
+  @Query("SELECT " +
+            "f " +
+          "FROM " +
+            "FileObject f " +
+          "WHERE " +
+            "f.user IS NULL " +
+              "AND " +
+            "f.application IS NULL "
+  )
+  List<FileObject> findFileObjectsWhereApplicationIsNullAndUserIsNull();
+
   Optional<FileObject> findFileObjectByApplicationAndUserAndComponentId(Application application, User user, Long componentId);
 }
