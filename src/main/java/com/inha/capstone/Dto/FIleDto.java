@@ -32,4 +32,18 @@ public class FIleDto {
   public static class PostFileResponse {
     String filePath;
   }
+
+  /**
+   * 파일 제거를 위한 filePath 요청 request DTO
+   * @String filePath
+   */
+  @Data
+  public static class DeleteFileRequest {
+    @NotBlank
+    Long applicationId;
+    @NotBlank
+    Long userId;
+    @NotBlank
+    Long componentId;
+  }
 }
