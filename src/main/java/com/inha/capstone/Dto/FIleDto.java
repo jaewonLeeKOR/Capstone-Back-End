@@ -2,6 +2,7 @@ package com.inha.capstone.Dto;
 
 import com.inha.capstone.domain.FileCategory;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 public class FIleDto {
@@ -44,6 +45,18 @@ public class FIleDto {
     @NotBlank
     Long userId;
     @NotBlank
+    Long componentId;
+  }
+
+  /**
+   * 애플리케이션의 파일 요청에 대한 response DTO
+   * @String filePath
+   * @Long componentId
+   */
+  @Data
+  @AllArgsConstructor
+  public static class GetFileResponse {
+    String filePath;
     Long componentId;
   }
 }
