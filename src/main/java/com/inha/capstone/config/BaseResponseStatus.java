@@ -17,7 +17,8 @@ public enum BaseResponseStatus {
     NOT_EXIST_APPLICATION(false,HttpStatus.NOT_FOUND, "존재하지 않는 애플리케이션입니다."),
     CONVERT_MULTIPART_FILE_FAILED(false, HttpStatus.SERVICE_UNAVAILABLE, "MultiPartFile 변환 실패"),
     INCORRECT_APPLICATIONID(false, HttpStatus.NO_CONTENT,"ApplicationId 는 0이 될 수 없습니다."),
-    CANNOT_CREATE_FILE(false, HttpStatus.CONFLICT,"서버상에 임시파일을 생성할 수 없음");
+    CANNOT_CREATE_FILE(false, HttpStatus.CONFLICT,"서버상에 임시파일을 생성할 수 없음"),
+    NOT_EXIST_FILE(false, HttpStatus.NO_CONTENT, "존재하지 않는 파일입니다."),
     ;
     private final boolean isSuccess;
     private final HttpStatus httpStatus;
