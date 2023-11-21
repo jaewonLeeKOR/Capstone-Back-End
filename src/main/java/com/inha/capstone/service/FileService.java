@@ -141,12 +141,30 @@ public class FileService {
 
   /**
    * 파일 데이터 제거 메서드
-   * @param applcation
-   * @param user
+   * @param applicationId
+   * @param userId
    * @param componentId
+   * @param requestedUser
    */
-  public void deleteFile(Application applcation, User user, Long componentId){
-    FileObject file = findFileObject(applcation, user, componentId).get();
+  public void deleteFile(Long applicationId, Long userId, Long componentId, User requestedUser){
+    Application application = null;
+    User user = null;
+    if(applicationId == 0 && userId == 0) {} // 전역 공용
+    else if(applicationId != 0 && userId == 0) { // 애플리케이션 내 공용
+      if(application.getUser().getId() != requestedUser.getId())
+        throw new BaseException(BaseResponseStatus.PERMISSION_DENIED);
+      user = requestedUser;
+    }
+    else if(applicationId !=0 && userId != 0) { // 애플리케이션 내 개인
+      if(userId != requestedUser.getId())
+        throw new BaseException(BaseResponseStatus.PERMISSION_DENIED);
+      user = requestedUser;
+    }
+    else {
+      throw new BaseException(BaseResponseStatus.PERMISSION_DENIED);
+    }
+    FileObject file = findFileObject(application, user, componentId)
+        .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_EXIST_FILE));
     deleteFileByFileObject(file);
   }
 

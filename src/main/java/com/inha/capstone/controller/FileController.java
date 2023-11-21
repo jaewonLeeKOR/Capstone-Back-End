@@ -38,11 +38,10 @@ public class FileController {
   }
 
   @DeleteMapping()
-  public ResponseEntity<BaseResponse<Boolean>> deleteFile(@RequestBody DeleteFileRequest request) {
-    User user = userService.findOne(request.getUserId());
-    Application application = applicationService.findById(request.getApplicationId());
-    fileService.deleteFile(application, user, request.getComponentId());
-    log.info("deleteFile REQUESTED - applicationId : " + application.getApplicationId() + ", userId : " + user.getId() + ",componentId : " + request.getComponentId());
+  public ResponseEntity<BaseResponse<Boolean>> deleteFile(Principal principal, @RequestBody DeleteFileRequest request) {
+    User requestedUser = userService.findByUserId(principal.getName());
+    fileService.deleteFile(request.getApplicationId(), request.getUserId(), request.getComponentId(), requestedUser);
+    log.info("deleteFile REQUESTED - applicationId : " + request.getApplicationId() + ", requestedUserId : " + requestedUser.getId() + ",componentId : " + request.getComponentId());
     return ResponseEntity.ok().body(new BaseResponse<>(true));
   }
 
