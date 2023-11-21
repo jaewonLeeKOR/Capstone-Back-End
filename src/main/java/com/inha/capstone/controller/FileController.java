@@ -25,7 +25,7 @@ public class FileController {
   private final UserService userService;
   private final ApplicationService applicationService;
 
-  @PostMapping("/upload")
+  @PostMapping()
   public ResponseEntity<BaseResponse<String>> uploadFile (
       Principal principal,
       @RequestPart(value = "file") MultipartFile multipartFile,
@@ -37,7 +37,7 @@ public class FileController {
     return ResponseEntity.ok().body(new BaseResponse(s3FilePath));
   }
 
-  @DeleteMapping("/delete")
+  @DeleteMapping()
   public ResponseEntity<BaseResponse<Boolean>> deleteFile(@RequestBody DeleteFileRequest request) {
     User user = userService.findOne(request.getUserId());
     Application application = applicationService.findById(request.getApplicationId());
@@ -46,7 +46,7 @@ public class FileController {
     return ResponseEntity.ok().body(new BaseResponse<>(true));
   }
 
-  @GetMapping()
+  @GetMapping("/global")
   public ResponseEntity<BaseResponse<List<GetFileResponse>>> getFileGlobalPathes() {
     List<GetFileResponse> filePathes = fileService.getGlobalFilePathes();
     log.info("getFileGlobalPathes REQUESTED");
