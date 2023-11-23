@@ -106,6 +106,8 @@ public class FileService {
         FileOutputStream fos = new FileOutputStream(convertFile);
         fos.write(multipartFile.getBytes());
       } else {
+        if(!convertFile.delete())
+          log.warn("임시파일이 삭제되지 않았습니다.");
         throw new BaseException(BaseResponseStatus.CONVERT_MULTIPART_FILE_FAILED);
       }
     } catch (IOException e) {
