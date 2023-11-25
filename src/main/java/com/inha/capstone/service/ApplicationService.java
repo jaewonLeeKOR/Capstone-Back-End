@@ -32,7 +32,7 @@ public class ApplicationService {
     private final MongoTemplate mongoTemplate;
     private final UserRepository userRepository;
     @Transactional
-    public void save(Application application, String UI) throws ParseException {
+    public void saveV1(Application application, String UI) throws ParseException {
         // postgresql에 저장
         applicationRepository.save(application);
 
@@ -42,16 +42,26 @@ public class ApplicationService {
         UIJson.put("applicationId", application.getApplicationId());
         mongoTemplate.insert(UIJson, "app");
     }
+    @Transactional
+    public void save(Application application) throws ParseException {
+        applicationRepository.save(application);
+    }
 
-    public JSONObject getApplicationUI(Long applicationId){
+    public JSONObject getApplicationUIV1(Long applicationId){
         Query query = new Query(Criteria.where("applicationId").is(applicationId));
         List<JSONObject> UI = mongoTemplate.find(query, JSONObject.class, "app");
 
         return UI.get(0);
     }
 
+    public String getApplicationUrl(Long applicationId){
+        Application application = applicationRepository.findById(applicationId)
+            .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_EXIST_APPLICATION));
+        return application.getApplicationUrl();
+    }
+
     @Transactional
-    public void updateApplication(Long applicationId, String newUi) throws ParseException{
+    public void updateApplicationV1(Long applicationId, String newUi) throws ParseException{
         // 수정 시간 변경
         Application application = applicationRepository.findById(applicationId).get();
         application.setModifiedDate(LocalDateTime.now());
@@ -74,7 +84,7 @@ public class ApplicationService {
             throw new BaseException(BaseResponseStatus.PERMISSION_DENIED);
     }
 
-    public List<Application> findByNameContaining(String keyword) { return applicationRepository.findByNameContaining(keyword);}
+    public List<Application> findByNameContaining(String keyword) { return applicationRepository.findByTitleContaining(keyword);}
 
     public Application findById(Long applicationId) {
         Optional<Application> application = applicationRepository.findById(applicationId);
