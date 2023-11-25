@@ -11,5 +11,5 @@ import java.util.List;
 
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
-    List<Application> findByNameContaining(String keyword);
+    List<Application> findByTitleContaining(String keyword);
 }
