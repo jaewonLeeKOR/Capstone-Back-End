@@ -16,6 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.security.Principal;
 import java.util.List;
 
+import static com.inha.capstone.util.LogUtil.getRequestLog;
+import static com.inha.capstone.util.LogUtil.getResponseLog;
+import static com.inha.capstone.util.LogUtil.HttpRequestMethod.*;
+
 @Slf4j
 @RequestMapping("/file")
 @RestController
@@ -31,33 +35,41 @@ public class FileController {
       @RequestPart(value = "file") MultipartFile multipartFile,
       @RequestPart(value = "info") PostFileRequest request
   ) {
+    String endpointPath = "/file";
+    log.info(getRequestLog(POST, endpointPath,request));
     User user = userService.findByUserId(principal.getName());
-    String s3FilePath = fileService.saveFile(multipartFile, request.getFileCategory(), request.getApplicationId(), request.getUserId(), request.getComponentId(), user);
-    log.info("uploadFile REQUESTED - applicationId : " + request.getApplicationId()+ ",userId : " + request.getUserId() + ",componentId : " + request.getComponentId() + ",fileCategory : " + request.getFileCategory());
-    return ResponseEntity.ok().body(new BaseResponse(s3FilePath));
+    String response = fileService.saveFile(multipartFile, request.getFileCategory(), request.getApplicationId(), request.getUserId(), request.getComponentId(), user);
+    log.info(getResponseLog(POST, endpointPath,request,response));
+    return ResponseEntity.ok().body(new BaseResponse(response));
   }
 
   @DeleteMapping()
   public ResponseEntity<BaseResponse<Boolean>> deleteFile(Principal principal, @RequestBody DeleteFileRequest request) {
+    String endpointPath = "/file";
+    log.info(getRequestLog(DELETE, endpointPath, request));
     User requestedUser = userService.findByUserId(principal.getName());
     fileService.deleteFile(request.getApplicationId(), request.getUserId(), request.getComponentId(), requestedUser);
-    log.info("deleteFile REQUESTED - applicationId : " + request.getApplicationId() + ", requestedUserId : " + requestedUser.getId() + ",componentId : " + request.getComponentId());
+    log.info(getResponseLog(DELETE, endpointPath, request, null));
     return ResponseEntity.ok().body(new BaseResponse<>(true));
   }
 
   @GetMapping("/global")
   public ResponseEntity<BaseResponse<List<GetFileResponse>>> getFileGlobalPathes() {
-    List<GetFileResponse> filePathes = fileService.getGlobalFilePathes();
-    log.info("getFileGlobalPathes REQUESTED");
-    return ResponseEntity.ok().body(new BaseResponse<>(filePathes));
+    String endpointPath = "/file/global";
+    log.info(getRequestLog(GET, endpointPath, null));
+    List<GetFileResponse> response = fileService.getGlobalFilePathes();
+    log.info(getResponseLog(GET, endpointPath, null, response));
+    return ResponseEntity.ok().body(new BaseResponse<>(response));
   }
 
   @GetMapping("/applicaiton/{applicationId}")
   public ResponseEntity<BaseResponse<List<GetFileResponse>>> getFilePathes(Principal principal, @PathVariable("applicationId") Long applicationId) {
+    String endpointPath = "/file/applicaiton/" + applicationId;
+    log.info(getRequestLog(GET, endpointPath, null));
     User user = userService.findByUserId(principal.getName());
-    List<GetFileResponse> filePathes = fileService.getFilePathes(applicationId, user);
-    log.info("getFilePathes REQUESTED - applicationId : " + applicationId + ", userId : " + user.getId() + ", files : " + filePathes.size());
-    return ResponseEntity.ok().body(new BaseResponse<>(filePathes));
+    List<GetFileResponse> response = fileService.getFilePathes(applicationId, user);
+    log.info(getResponseLog(GET, endpointPath, null, response));
+    return ResponseEntity.ok().body(new BaseResponse<>(response));
   }
 }
 

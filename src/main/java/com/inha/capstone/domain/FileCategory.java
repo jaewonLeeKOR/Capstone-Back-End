@@ -9,7 +9,8 @@ public enum FileCategory {
   IMAGE("image"),
   VIDEO("video"),
   AUDIO("audio"),
-  GIF("gif")
+  GIF("gif"),
+  APPLICATION("application"),
   ;
   public final String name;
 }
