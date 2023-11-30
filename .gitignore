@@ -38,3 +38,10 @@ out/
 
 ### application.yml ###
 src/main/resources/*.yml
+
+### crawler.py ###
+src/main/java/com/inha/capstone/util/*.py
+
+### tmp file ###
+util/html/*.html
+util/ui/*

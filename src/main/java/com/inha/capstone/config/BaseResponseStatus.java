@@ -19,6 +19,8 @@ public enum BaseResponseStatus {
     INCORRECT_APPLICATIONID(false, HttpStatus.NO_CONTENT,"ApplicationId 는 0이 될 수 없습니다."),
     CANNOT_CREATE_FILE(false, HttpStatus.CONFLICT,"서버상에 임시파일을 생성할 수 없음"),
     NOT_EXIST_FILE(false, HttpStatus.NO_CONTENT, "존재하지 않는 파일입니다."),
+    CRAWLER_ERROR(false, HttpStatus.BAD_REQUEST, "크롤러에서 에러가 발생했습니다."),
+    MAKE_HTML_ERROR(false, HttpStatus.BAD_REQUEST, "make html에서 에러가 발생했습니다."),
     ;
     private final boolean isSuccess;
     private final HttpStatus httpStatus;

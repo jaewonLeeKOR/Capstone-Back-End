@@ -35,8 +35,12 @@ public class ApplicationDto {
         String description;
         @NotBlank
         String category;
-        @NotBlank
-        String thumbnailUrl;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class CreateApplicationResponse {
+        String applicationUrl;
     }
 
     @Data
@@ -51,7 +55,12 @@ public class ApplicationDto {
         String subTitle;
         String description;
         String category;
-        String thumbnailUrl;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class UpdateApplicationResponse {
+        String applicationUrl;
     }
 
     @Data

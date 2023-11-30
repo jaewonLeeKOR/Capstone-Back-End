@@ -43,8 +43,8 @@ public class ApplicationService {
         mongoTemplate.insert(UIJson, "app");
     }
     @Transactional
-    public void save(Application application) throws ParseException {
-        applicationRepository.save(application);
+    public Application save(Application application) throws ParseException {
+        return applicationRepository.save(application);
     }
 
     public JSONObject getApplicationUIV1(Long applicationId){

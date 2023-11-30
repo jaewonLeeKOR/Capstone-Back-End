@@ -1,5 +1,10 @@
 package com.inha.capstone.util;
 
+import com.inha.capstone.config.BaseException;
+import com.inha.capstone.config.BaseResponseStatus;
+import com.inha.capstone.service.FileService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,35 +14,46 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class Crawler {
+    private final FileService fileService;
 
     // 크롤러 저장 위치
-    @Value("${spring.python.path}")
+    @Value("${env.path.python}")
     String pythonPath;
-    
+
     // open AI 키
-    @Value("${spring.gpt.key}")
+    @Value("${env.gpt.key}")
     String gptKey;
-    
+
     // UI 임시 저장 경로
-    @Value("${spring.image.tmp.path}")
+    @Value("${env.path.tmp.ui}")
     Path tmpPath;
 
     // html 저장 경로
-    @Value("${spring.html.path}")
+    @Value("${env.path.tmp.html}")
     Path htmlPath;
-    public String makeHtml(MultipartFile sourceImage, String fileName) throws IOException, InterruptedException {
+
+    @Value("${env.path.chromedriver}")
+    String chromedriverPath;
+
+    public String makeHtml(MultipartFile sourceImage) throws IOException, InterruptedException {
+        String fileName = null;
         try {
+            fileName = sourceImage.getOriginalFilename();
             Process process = executeCrawler(sourceImage);
             String htmlString = makeHtmlString(process);
             createHtmlFile(htmlString, htmlPath, fileName);
-            System.out.println(htmlPath + "/" + fileName + ".html");
+            log.info("method : makeHTML - .html file created" + htmlPath + "/" + fileName);
             return htmlPath + "/" + fileName + ".html";
         }
         catch (Exception e){
             System.out.println(e.getMessage());
-            return "";
+            fileService.deleteFileFromLocal(htmlPath + "/" + fileName);
+            throw new BaseException(BaseResponseStatus.MAKE_HTML_ERROR);
         }
     }
 
@@ -45,7 +61,7 @@ public class Crawler {
     // 파이썬 실행
     private Process executeCrawler(MultipartFile image) throws IOException, InterruptedException {
         Path tempImageFile = createTempImageFile(image.getBytes(), tmpPath);
-        String[] command = {"python", pythonPath, gptKey, tempImageFile.toString()};
+        String[] command = {"python3", pythonPath, gptKey, tempImageFile.toString(), chromedriverPath};
         ProcessBuilder processBuilder = new ProcessBuilder(command);
         Process process = processBuilder.start();
         process.waitFor();

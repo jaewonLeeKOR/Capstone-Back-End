@@ -34,7 +34,6 @@ public class Application {
         this.title = request.getTitle();
         this.subTitle = request.getSubTitle();
         this.description = request.getDescription();
-        this.thumbnailUrl = request.getThumbnailUrl();
         this.user = user;
         this.createdDate = LocalDateTime.now();
         this.modifiedDate = LocalDateTime.now();
@@ -46,6 +45,5 @@ public class Application {
         this.subTitle = request.getSubTitle() == null ? this.subTitle : request.getSubTitle();
         this.description = request.getDescription() == null ? this.description : request.getDescription();
         this.applicationCategory = request.getCategory() == null ? this.applicationCategory: ApplicationCategory.nameOf(request.getCategory());
-        this.thumbnailUrl = request.getThumbnailUrl() == null ? this.thumbnailUrl : request.getThumbnailUrl();
     }
 }

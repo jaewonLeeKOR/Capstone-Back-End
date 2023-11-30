@@ -232,24 +232,24 @@ public class FileService {
     return fileRepository.findFileObjectByApplicationAndUserAndComponentId(application, user, componentId);
   }
 
-  public String saveFileToLocal(MultipartFile multipartFile) {
-    // 임시파일 경로 지정
-    File convertFile = new File(System.getProperty("java.io.tmpdir")+"/" + multipartFile.getOriginalFilename());
-    try {
-      if (convertFile.createNewFile()) { // 임시파일 생성
-        // MultiPartFile -> File 변환
-        FileOutputStream fos = new FileOutputStream(convertFile);
-        fos.write(multipartFile.getBytes());
-      } else {
-        if(!convertFile.delete())
-          log.warn("애플리케이션 ui 임시파일이 삭제되지 않았습니다.");
-        throw new BaseException(BaseResponseStatus.CONVERT_MULTIPART_FILE_FAILED);
-      }
-    } catch (IOException e) {
-      throw new BaseException(BaseResponseStatus.CANNOT_CREATE_FILE);
-    }
-    return convertFile.getPath();
-  }
+//  public String saveFileToLocal(MultipartFile multipartFile) {
+//    // 임시파일 경로 지정
+//    File convertFile = new File(System.getProperty("java.io.tmpdir")+"/" + multipartFile.getOriginalFilename());
+//    try {
+//      if (convertFile.createNewFile()) { // 임시파일 생성
+//        // MultiPartFile -> File 변환
+//        FileOutputStream fos = new FileOutputStream(convertFile);
+//        fos.write(multipartFile.getBytes());
+//      } else {
+//        if(!convertFile.delete())
+//          log.warn("애플리케이션 ui 임시파일이 삭제되지 않았습니다.");
+//        throw new BaseException(BaseResponseStatus.CONVERT_MULTIPART_FILE_FAILED);
+//      }
+//    } catch (IOException e) {
+//      throw new BaseException(BaseResponseStatus.CANNOT_CREATE_FILE);
+//    }
+//    return convertFile.getPath();
+//  }
 
   public void deleteFileFromLocal(String absoluteFilePath) {
     File file = new File(absoluteFilePath);
@@ -257,24 +257,9 @@ public class FileService {
       log.warn("애플리케이션 ui 임시파일이 삭제되지 않았습니다.");
   }
 
-  public void deleteDirectoryFromLocal(String directoryPath) {
-    File directory = new File(directoryPath);
-    if(directory.exists()) {
-      File[] fileList = directory.listFiles();
-      for(File file : fileList) {
-        if(!file.isFile()) {
-          deleteDirectoryFromLocal(file.getPath());
-        }
-        if(!file.delete())
-          log.warn("애플리케이션 임시파일이 삭제되지 않았습니다.");
-      }
-      if(!directory.delete())
-        log.warn("애플리케이션 임시파일이 삭제되지 않았습니다.");
-    }
-  }
-  public String uploadApplicationToS3(String uiFilePath, Long applicationId, Long userId) {
+  public String uploadFileToS3WithoutDatabase(FileCategory fileCategory, String uiFilePath, Long applicationId, Long userId) {
     File file = new File(uiFilePath);
-    String fileName = rootPackage + "/application/" + applicationId.toString() + "/" + userId.toString() + "/0/" + UUID.randomUUID() + "-" + file.getName();
+    String fileName = rootPackage + "/" + fileCategory.getName() + "/" + applicationId.toString() + "/" + userId.toString() + "/0/" + file.getName();
     amazonS3Client.putObject(
         new PutObjectRequest(bucket, fileName, file)
             .withCannedAcl(CannedAccessControlList.PublicRead)
