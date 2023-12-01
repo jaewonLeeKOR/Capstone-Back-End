@@ -12,6 +12,7 @@ import com.inha.capstone.domain.FileCategory;
 import com.inha.capstone.domain.FileObject;
 import com.inha.capstone.domain.User;
 import com.inha.capstone.repository.FileRepository;
+import com.inha.capstone.util.Crawler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,10 +24,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.inha.capstone.util.Crawler.createTempImageFile;
 
 @Slf4j
 @Service
@@ -41,6 +45,8 @@ public class FileService {
   private String bucket;
   @Value("${cloud.aws.s3.root-package}")
   private String rootPackage;
+  @Value("${env.path.tmp.ui}")
+  Path tmpPath;
 
   /**
    * 파일 데이터 저장 메서드
@@ -265,6 +271,16 @@ public class FileService {
             .withCannedAcl(CannedAccessControlList.PublicRead)
     );
     return amazonS3Client.getUrl(bucket, fileName).toString();
+  }
+
+  public String uploadFileToS3WithoutDatabaseMultipartFile(FileCategory fileCategory, MultipartFile multipartFile, Long applicationId, Long userId) {
+    Path tempImagePath = null;
+    try {
+      tempImagePath = Crawler.createTempImageFile(multipartFile.getBytes(), tmpPath);
+    } catch (IOException e) {
+      throw new BaseException(BaseResponseStatus.CONVERT_MULTIPART_FILE_FAILED);
+    }
+    return uploadFileToS3WithoutDatabase(fileCategory, tempImagePath.toAbsolutePath().toString(), applicationId, userId);
   }
 }
 

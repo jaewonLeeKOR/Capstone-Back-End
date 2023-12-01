@@ -35,60 +35,60 @@ public class Crawler {
 
     // html 저장 경로
     @Value("${env.path.tmp.html}")
-    Path htmlPath;
+    static Path htmlPath;
 
     @Value("${env.path.chromedriver}")
     String chromedriverPath;
 
-    public String makeHtml(MultipartFile sourceImage) throws IOException, InterruptedException {
-        String fileName = null;
-        try {
-            fileName = sourceImage.getOriginalFilename();
-            Process process = executeCrawler(sourceImage);
-            String htmlString = makeHtmlString(process);
-            createHtmlFile(htmlString, htmlPath, fileName);
-            log.info("method : makeHTML - .html file created" + htmlPath + "/" + fileName);
-            return htmlPath + "/" + fileName + ".html";
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-            fileService.deleteFileFromLocal(htmlPath + "/" + fileName);
-            throw new BaseException(BaseResponseStatus.MAKE_HTML_ERROR);
-        }
-    }
+//    public String makeHtml(MultipartFile sourceImage) throws IOException, InterruptedException {
+//        String fileName = null;
+//        try {
+//            fileName = sourceImage.getOriginalFilename();
+//            Process process = executeCrawler(sourceImage);
+//            String htmlString = makeHtmlString(process);
+//            createHtmlFile(htmlString, htmlPath, fileName);
+//            log.info("method : makeHTML - .html file created" + htmlPath + "/" + fileName);
+//            return htmlPath + "/" + fileName + ".html";
+//        }
+//        catch (Exception e){
+//            System.out.println(e.getMessage());
+//            fileService.deleteFileFromLocal(htmlPath + "/" + fileName);
+//            throw new BaseException(BaseResponseStatus.MAKE_HTML_ERROR);
+//        }
+//    }
 
 
     // 파이썬 실행
-    private Process executeCrawler(MultipartFile image) throws IOException, InterruptedException {
-        Path tempImageFile = createTempImageFile(image.getBytes(), tmpPath);
-        String[] command = {"python3", pythonPath, gptKey, tempImageFile.toString(), chromedriverPath};
-        ProcessBuilder processBuilder = new ProcessBuilder(command);
-        Process process = processBuilder.start();
-        process.waitFor();
-        Files.delete(tempImageFile);
-        return process;
-    }
+//    private Process executeCrawler(MultipartFile image) throws IOException, InterruptedException {
+//        Path tempImageFile = createTempImageFile(image.getBytes(), tmpPath);
+//        String[] command = {"python3", pythonPath, gptKey, tempImageFile.toString(), chromedriverPath};
+//        ProcessBuilder processBuilder = new ProcessBuilder(command);
+//        Process process = processBuilder.start();
+//        process.waitFor();
+//        Files.delete(tempImageFile);
+//        return process;
+//    }
 
     //
-    private String makeHtmlString(Process process) throws IOException{
-        InputStream inputStream = process.getInputStream();
-        // 각 스트림을 읽어오기 위한 Reader 생성
-        BufferedReader inputReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-
-        // 표준 출력 읽기
-        String line;
-        String ret = "";
-        while ((line = inputReader.readLine()) != null) {
-            ret += line;
-        }
-        ret = new String(ret.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-
-        return ret;
-    }
+//    private String makeHtmlString(Process process) throws IOException{
+//        InputStream inputStream = process.getInputStream();
+//        // 각 스트림을 읽어오기 위한 Reader 생성
+//        BufferedReader inputReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+//
+//        // 표준 출력 읽기
+//        String line;
+//        String ret = "";
+//        while ((line = inputReader.readLine()) != null) {
+//            ret += line;
+//        }
+//        ret = new String(ret.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+//
+//        return ret;
+//    }
 
 
     // 이미지 임시 저장
-    private static Path createTempImageFile(byte[] imageBytes, Path targetDirectory) throws IOException {
+    public static Path createTempImageFile(byte[] imageBytes, Path targetDirectory) throws IOException {
         // 임시 이미지 파일 생성
         Path tempImagePath = Files.createTempFile(targetDirectory, "tempImage", ".png");
         // 이미지 바이트를 파일에 기록
@@ -97,9 +97,17 @@ public class Crawler {
         return tempImagePath;
     }
 
-    private static void createHtmlFile(String html, Path targetDirectory, String fileName) throws IOException{
-        Path resolve = targetDirectory.resolve(fileName+".html");
-        Files.write(resolve, html.getBytes(StandardCharsets.UTF_8));
-    }
+//    public static String createHtmlFile(String html, String fileName) throws IOException{
+//        Path resolve = htmlPath.resolve(fileName+".html");
+//        Files.write(resolve, html.getBytes(StandardCharsets.UTF_8));
+//        return htmlPath + "/"  + "/" + fileName + ".html";
+//    }
 
+
+    public static String createHtmlFile(String html, Path targetDirectory) throws IOException{
+//        Path resolve = htmlPath.resolve(fileName+".html");
+        Path tempImagePath = Files.createTempFile(targetDirectory, "tempHtml", ".html");
+        Files.write(tempImagePath, html.getBytes(StandardCharsets.UTF_8));
+        return tempImagePath.toString();
+    }
 }

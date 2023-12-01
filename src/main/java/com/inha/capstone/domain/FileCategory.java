@@ -11,6 +11,7 @@ public enum FileCategory {
   AUDIO("audio"),
   GIF("gif"),
   APPLICATION("application"),
+  UI_IMAGE("uiImage"),
   ;
   public final String name;
 }
