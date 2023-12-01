@@ -21,6 +21,7 @@ public enum BaseResponseStatus {
     NOT_EXIST_FILE(false, HttpStatus.NO_CONTENT, "존재하지 않는 파일입니다."),
     CRAWLER_ERROR(false, HttpStatus.BAD_REQUEST, "크롤러에서 에러가 발생했습니다."),
     MAKE_HTML_ERROR(false, HttpStatus.BAD_REQUEST, "make html에서 에러가 발생했습니다."),
+    MAKE_REAL_CONVERTER_ERROR(false, HttpStatus.BAD_REQUEST, "makereal.sanvit 호출에 실패했습니다."),
     ;
     private final boolean isSuccess;
     private final HttpStatus httpStatus;

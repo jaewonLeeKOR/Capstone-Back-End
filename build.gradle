@@ -56,6 +56,8 @@ dependencies {
 	//aws
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
+	//web3j
+	implementation 'org.web3j:core:4.9.6'
 }
 
 tasks.named('test') {
