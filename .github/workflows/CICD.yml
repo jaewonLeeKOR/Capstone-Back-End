@@ -74,9 +74,10 @@ jobs:
 
       - name: Make Zip File
         run: |
-          mkdir content
+          mkdir content tmp tmp/ui tmp/html
+          touch tmp/ui/.placeholder tmp/html/.placeholder
           mv ./build/libs/*.jar ./content/
-          zip buildFile.zip ./appspec.yml ./content/*.jar ./scripts/deploy.sh ./util/*.py
+          zip buildFile.zip ./appspec.yml ./content/*.jar ./scripts/deploy.sh ./util/*.py ./tmp/html/* ./tmp/ui/*
         shell:
           bash
 
