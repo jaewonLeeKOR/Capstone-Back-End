@@ -87,6 +87,7 @@ public class ApplicationDto {
         String title;
         String subTitle;
         String description;
+        String applicationUrl;
         String thumbnailUrl;
         String category;
         LocalDateTime createdDate;
@@ -96,6 +97,7 @@ public class ApplicationDto {
             this.title = application.getTitle();
             this.subTitle = application.getSubTitle();
             this.description = application.getDescription();
+            this.applicationUrl = application.getApplicationUrl();
             this.thumbnailUrl = application.getThumbnailUrl();
             this.category = application.getApplicationCategory().getName();
             this.createdDate = application.getCreatedDate();
@@ -108,6 +110,7 @@ public class ApplicationDto {
         String title;
         String subTitle;
         String description;
+        String applicationUrl;
         String thumbnailUrl;
         String category;
         LocalDateTime createdDate;
@@ -118,6 +121,7 @@ public class ApplicationDto {
             this.title = application.getTitle();
             this.subTitle = application.getSubTitle();
             this.description = application.getDescription();
+            this.applicationUrl = application.getApplicationUrl();
             this.thumbnailUrl = application.getThumbnailUrl();
             this.category = application.getApplicationCategory().getName();
             this.createdDate = application.getCreatedDate();
