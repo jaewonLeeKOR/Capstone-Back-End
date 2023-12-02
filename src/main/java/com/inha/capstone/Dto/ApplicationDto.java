@@ -40,6 +40,7 @@ public class ApplicationDto {
     @Data
     @AllArgsConstructor
     public static class CreateApplicationResponse {
+        Long applicationId;
         String applicationUrl;
     }
 

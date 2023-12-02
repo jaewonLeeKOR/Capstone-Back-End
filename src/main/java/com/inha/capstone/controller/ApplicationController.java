@@ -106,7 +106,7 @@ public class ApplicationController {
             application.setThumbnailUrl(thumbnailUrl);
         }
         application = applicationService.save(application);
-        CreateApplicationResponse response = new CreateApplicationResponse(application.getApplicationUrl());
+        CreateApplicationResponse response = new CreateApplicationResponse(application.getApplicationId(),application.getApplicationUrl());
 
         log.info(getResponseLog(POST, endpointPath, request, response));
         return ResponseEntity.ok().body(new BaseResponse(response));
